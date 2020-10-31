@@ -32,11 +32,37 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+  if (repositoryIndex<0){
+    return response.status(400).json({error: "Repository not found."});
+  }
+
+  const { title, url, techs } = request.body;
+
+  // if (!title || !url || !techs){
+  //   return response.status(400).json(
+  //     {error: "Some parameter is missing - 'title', 'url' and 'techs' are needed."}
+  //   );
+  // }
+
+  // if (Object.keys(request.body).length>3){
+  //   return response.status(400).json(
+  //     {error: "Too much parameters - only 'title', 'url' and 'techs' are needed."}
+  //   );
+  // }
+
+  const repositoryUpdated = {...repositories[repositoryIndex], title, url, techs};
+
+  repositories[repositoryIndex] = repositoryUpdated;
+
+  return response.json(repositoryUpdated);
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+  //TODO
 });
 
 app.post("/repositories/:id/like", (request, response) => {
